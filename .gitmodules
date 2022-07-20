@@ -1,9 +1,3 @@
-[submodule "Dependencies/GameArchives"]
-	path = Dependencies/GameArchives
-	url = https://github.com/maxton/GameArchives.git
-[submodule "Dependencies/LibOrbisPkg"]
-	path = Dependencies/LibOrbisPkg
-	url = https://github.com/maxton/LibOrbisPkg.git
 [submodule "Dependencies/DtxCS"]
 	path = Dependencies/DtxCS
 	url = https://github.com/InvoxiPlayGames/DtxCS.git
