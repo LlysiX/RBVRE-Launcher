@@ -49,16 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RBVRELauncherInspector.cs">
+    <Compile Include="RBVRELauncherApp.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RBVRELauncherInspector.Designer.cs">
-      <DependentUpon>RBVRELauncherInspector.cs</DependentUpon>
+    <Compile Include="RBVRELauncherApp.Designer.cs">
+      <DependentUpon>RBVRELauncherApp.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="RBVRELauncherInspector.resx">
-      <DependentUpon>RBVRELauncherInspector.cs</DependentUpon>
+    <EmbeddedResource Include="RBVRELauncherApp.resx">
+      <DependentUpon>RBVRELauncherApp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

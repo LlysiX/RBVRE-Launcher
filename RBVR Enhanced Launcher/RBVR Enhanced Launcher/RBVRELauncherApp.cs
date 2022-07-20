@@ -14,9 +14,9 @@ using DtxCS;
 
 namespace RBVR_Enhanced_Launcher
 {
-  public partial class RBVRELauncherInspector : Form
+  public partial class RBVRELauncherApp : Form
   {
-    public RBVRELauncherInspector()
+    public RBVRELauncherApp()
     {
       InitializeComponent();
     }
