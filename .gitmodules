@@ -1,3 +1,6 @@
 [submodule "Dependencies/DtxCS"]
 	path = Dependencies/DtxCS
 	url = https://github.com/InvoxiPlayGames/DtxCS.git
+[submodule "DtxCS"]
+	path = DtxCS
+	url = https://github.com/InvoxiPlayGames/DtxCS
