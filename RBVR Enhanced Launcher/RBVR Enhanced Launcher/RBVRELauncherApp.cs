@@ -62,7 +62,8 @@ namespace RBVR_Enhanced_Launcher
 
     private void pickFileButton_Click(object sender, EventArgs e)
     {
-      using (var ofd = new FolderBrowserDialog())
+            Action<string> log = x => logBox.AppendText(x + Environment.NewLine);
+            using (var ofd = new FolderBrowserDialog())
       {
         if(ofd.ShowDialog() == DialogResult.OK && Directory.Exists(ofd.SelectedPath + "/rawfiles"))
         {
@@ -70,7 +71,7 @@ namespace RBVR_Enhanced_Launcher
         }
         else
         {
-          logBox.AppendText($"ERROR: {ofd.SelectedPath}\\rawfiles does not exist!");
+          log($"ERROR: {ofd.SelectedPath}\\rawfiles does not exist!");
         }
         UpdateState();
       }
@@ -124,12 +125,13 @@ namespace RBVR_Enhanced_Launcher
     private void listBox1_DragDrop(object sender, DragEventArgs e)
     {
       string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-      foreach (string file in files)
-        if (Directory.Exists(file + "/rawfiles"))
-          listBox1.Items.Add(file);
-        else
-          logBox.AppendText($"ERROR: {file}\\rawfiles does not exist!");
-      UpdateState();
+            Action<string> log = x => logBox.AppendText(x + Environment.NewLine);
+            foreach (string file in files)
+                if (Directory.Exists(file + "/rawfiles"))
+                    listBox1.Items.Add(file);
+                else
+                    log($"ERROR: {file}\\rawfiles does not exist!");
+            UpdateState();
     }
 
     private void clearButton_Click(object sender, EventArgs e)
