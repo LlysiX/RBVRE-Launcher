@@ -100,7 +100,7 @@ namespace RBVR_Enhanced_Launcher
       rbvr.StartInfo.WorkingDirectory = folderName.Text;
       rbvr.StartInfo.FileName = rbvrExec;
       DirectoryInfo rbvrDir = new DirectoryInfo(folderName.Text);
-      if (Directory.Exists(rbvrPatchDir))
+      if ((! noDeleteCheck.Checked) && Directory.Exists(rbvrPatchDir))
       {
         Directory.Delete(rbvrPatchDir, true);
         log("Clearing Old Patches...");
@@ -157,5 +157,10 @@ namespace RBVR_Enhanced_Launcher
         }
       }
     }
-  }
+
+        private void noDeleteCheck_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

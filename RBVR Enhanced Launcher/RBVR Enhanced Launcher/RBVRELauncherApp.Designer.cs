@@ -45,6 +45,7 @@
             this.contentIdTextBox = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.logBox = new System.Windows.Forms.TextBox();
+            this.noDeleteCheck = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -102,6 +103,7 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.noDeleteCheck);
             this.groupBox2.Controls.Add(this.Outputbtn);
             this.groupBox2.Controls.Add(this.volumeAdjustCheckBox);
             this.groupBox2.Controls.Add(this.label2);
@@ -227,10 +229,22 @@
             this.logBox.Name = "logBox";
             this.logBox.ReadOnly = true;
             this.logBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logBox.Size = new System.Drawing.Size(861, 104);
+            this.logBox.Size = new System.Drawing.Size(850, 104);
             this.logBox.TabIndex = 5;
             // 
-            // RBVRELauncherInspector
+            // noDeleteCheck
+            // 
+            this.noDeleteCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.noDeleteCheck.AutoSize = true;
+            this.noDeleteCheck.Location = new System.Drawing.Point(509, 45);
+            this.noDeleteCheck.Name = "noDeleteCheck";
+            this.noDeleteCheck.Size = new System.Drawing.Size(166, 17);
+            this.noDeleteCheck.TabIndex = 7;
+            this.noDeleteCheck.Text = "Don\'t Delete Existing Patches";
+            this.noDeleteCheck.UseVisualStyleBackColor = true;
+            this.noDeleteCheck.CheckedChanged += new System.EventHandler(this.noDeleteCheck_CheckedChanged);
+            // 
+            // RBVRELauncherApp
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -242,7 +256,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "RBVRELauncherInspector";
+            this.Name = "RBVRELauncherApp";
             this.Text = "RBVR Enhanced Launcher";
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -272,5 +286,6 @@
         private System.Windows.Forms.Button Outputbtn;
         private System.Windows.Forms.Label Outputtxt;
         private System.Windows.Forms.Label folderName;
+        private System.Windows.Forms.CheckBox noDeleteCheck;
     }
 }
