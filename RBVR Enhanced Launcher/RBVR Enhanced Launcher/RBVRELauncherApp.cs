@@ -77,7 +77,7 @@ namespace RBVR_Enhanced_Launcher
       }
     }
 
-    void RemoveCon(string filename)
+    void RemovePatch(string filename)
     {
       listBox1.Items.Remove(filename);
     }
@@ -143,7 +143,7 @@ namespace RBVR_Enhanced_Launcher
     {
       if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
       {
-        RemoveCon(listBox1.SelectedItem as string);
+        RemovePatch(listBox1.SelectedItem as string);
         UpdateState();
       }
     }

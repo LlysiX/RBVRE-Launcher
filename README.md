@@ -1,4 +1,4 @@
-# RBVR Enhanced Launcher
+# RBVREnhanced Launcher
 
 This is a tool to run [Rock Band VR Enhanced](https://github.com/RBEnhanced/RBVREnhanced) with patches from [RBVRE-Patches](https://github.com/LlysiX/RBVRE-Patches).
 
