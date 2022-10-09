@@ -34,10 +34,10 @@
             this.clearButton = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.noDeleteCheck = new System.Windows.Forms.CheckBox();
             this.Outputbtn = new System.Windows.Forms.Button();
             this.volumeAdjustCheckBox = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.tspeedMult = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.folderName = new System.Windows.Forms.Label();
             this.Outputtxt = new System.Windows.Forms.Label();
@@ -45,10 +45,11 @@
             this.contentIdTextBox = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.logBox = new System.Windows.Forms.TextBox();
-            this.noDeleteCheck = new System.Windows.Forms.CheckBox();
+            this.tspeedMult = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tspeedMult)).BeginInit();
             this.SuspendLayout();
             // 
             // pickFileButton
@@ -103,11 +104,11 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.tspeedMult);
             this.groupBox2.Controls.Add(this.noDeleteCheck);
             this.groupBox2.Controls.Add(this.Outputbtn);
             this.groupBox2.Controls.Add(this.volumeAdjustCheckBox);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.tspeedMult);
             this.groupBox2.Enabled = false;
             this.groupBox2.Location = new System.Drawing.Point(4, 214);
             this.groupBox2.Name = "groupBox2";
@@ -115,6 +116,18 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Step 2: Select your RBVR.exe file";
+            // 
+            // noDeleteCheck
+            // 
+            this.noDeleteCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.noDeleteCheck.AutoSize = true;
+            this.noDeleteCheck.Location = new System.Drawing.Point(509, 45);
+            this.noDeleteCheck.Name = "noDeleteCheck";
+            this.noDeleteCheck.Size = new System.Drawing.Size(166, 17);
+            this.noDeleteCheck.TabIndex = 7;
+            this.noDeleteCheck.Text = "Don\'t Delete Existing Patches";
+            this.noDeleteCheck.UseVisualStyleBackColor = true;
+            this.noDeleteCheck.CheckedChanged += new System.EventHandler(this.noDeleteCheck_CheckedChanged);
             // 
             // Outputbtn
             // 
@@ -136,7 +149,6 @@
             this.volumeAdjustCheckBox.TabIndex = 6;
             this.volumeAdjustCheckBox.Text = "Use RB1-4 base Track Speed";
             this.volumeAdjustCheckBox.UseVisualStyleBackColor = true;
-            this.volumeAdjustCheckBox.Visible = false;
             // 
             // label2
             // 
@@ -146,17 +158,6 @@
             this.label2.Size = new System.Drawing.Size(116, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Track Speed Multiplier:";
-            this.label2.Visible = false;
-            // 
-            // tspeedMult
-            // 
-            this.tspeedMult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tspeedMult.Location = new System.Drawing.Point(514, 19);
-            this.tspeedMult.Name = "tspeedMult";
-            this.tspeedMult.Size = new System.Drawing.Size(336, 20);
-            this.tspeedMult.TabIndex = 0;
-            this.tspeedMult.Visible = false;
-            this.tspeedMult.TextChanged += new System.EventHandler(this.idBox_TextChanged);
             // 
             // groupBox3
             // 
@@ -232,17 +233,14 @@
             this.logBox.Size = new System.Drawing.Size(850, 104);
             this.logBox.TabIndex = 5;
             // 
-            // noDeleteCheck
+            // tspeedMult
             // 
-            this.noDeleteCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.noDeleteCheck.AutoSize = true;
-            this.noDeleteCheck.Location = new System.Drawing.Point(509, 45);
-            this.noDeleteCheck.Name = "noDeleteCheck";
-            this.noDeleteCheck.Size = new System.Drawing.Size(166, 17);
-            this.noDeleteCheck.TabIndex = 7;
-            this.noDeleteCheck.Text = "Don\'t Delete Existing Patches";
-            this.noDeleteCheck.UseVisualStyleBackColor = true;
-            this.noDeleteCheck.CheckedChanged += new System.EventHandler(this.noDeleteCheck_CheckedChanged);
+            this.tspeedMult.DecimalPlaces = 2;
+            this.tspeedMult.Location = new System.Drawing.Point(131, 19);
+            this.tspeedMult.Name = "tspeedMult";
+            this.tspeedMult.Size = new System.Drawing.Size(48, 20);
+            this.tspeedMult.TabIndex = 8;
+            this.tspeedMult.ValueChanged += new System.EventHandler(this.tspeedMult_ValueChanged);
             // 
             // RBVRELauncherApp
             // 
@@ -263,6 +261,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tspeedMult)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -274,7 +273,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox tspeedMult;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label contentIdTextBox;
         private System.Windows.Forms.CheckBox volumeAdjustCheckBox;
@@ -287,5 +285,6 @@
         private System.Windows.Forms.Label Outputtxt;
         private System.Windows.Forms.Label folderName;
         private System.Windows.Forms.CheckBox noDeleteCheck;
+        private System.Windows.Forms.NumericUpDown tspeedMult;
     }
 }

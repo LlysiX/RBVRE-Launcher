@@ -32,7 +32,7 @@ namespace RBVR_Enhanced_Launcher
       {
         groupBox2.Enabled = false;
         groupBox3.Enabled = false;
-        tspeedMult.Text = "";
+        tspeedMult.Value = 0;
         return;
       }
       else
@@ -97,6 +97,8 @@ namespace RBVR_Enhanced_Launcher
       Action<string> log = x => logBox.AppendText(x + Environment.NewLine);
       var rbvrExec = folderName.Text + "/rbvr.exe";
       var rbvrPatchDir = folderName.Text + "/rawfiles";
+            string rbvrtSpeedA = File.ReadAllText("track_graphics.dta");
+            var rbvrtSpeedB = folderName.Text + "/rawfiles/pc/config/include/track_graphics.dta_dta_pc";
       Process rbvr = new Process();
       rbvr.StartInfo.WorkingDirectory = folderName.Text;
       rbvr.StartInfo.FileName = rbvrExec;
@@ -113,7 +115,49 @@ namespace RBVR_Enhanced_Launcher
         CopyPatches(patch, rbvrDir);
         log($"Copying Patch {listBox1.Items[i]} to {folderName.Text}...");
       }
-      log("Starting RBVR!");
+      if (tspeedMult.Value > 0)
+      {
+                if (File.Exists($"{rbvrPatchDir}/pc/config/include/track_graphics.dta_dta_pc"))
+                    File.Delete($"{rbvrPatchDir}/pc/config/include/track_graphics.dta_dta_pc");
+
+                if (volumeAdjustCheckBox.Checked)
+                {
+                    log($"adding track multiplier of {tspeedMult.Value} using RB1-RB4 Multiplier");
+                    decimal ezspd = 2.4m / tspeedMult.Value;
+                    decimal mdspd = 2.0m / tspeedMult.Value;
+                    decimal hdspd = 1.6m / tspeedMult.Value;
+                    decimal exspd = 1.2m / tspeedMult.Value;
+
+                    Directory.CreateDirectory(rbvrPatchDir + "/pc/config/include/");
+
+                    rbvrtSpeedA = rbvrtSpeedA.Replace("2.4", $"{ezspd}");
+                    rbvrtSpeedA = rbvrtSpeedA.Replace("2.0", $"{mdspd}");
+                    rbvrtSpeedA = rbvrtSpeedA.Replace("1.6", $"{hdspd}");
+                    rbvrtSpeedA = rbvrtSpeedA.Replace("1.2", $"{exspd}");
+                }
+                else
+                {
+                    log($"adding track multiplier of {tspeedMult.Value} using RBVR Multiplier");
+                    decimal ezspd = 3.4m / tspeedMult.Value;
+                    decimal mdspd = 3.0m / tspeedMult.Value;
+                    decimal hdspd = 2.6m / tspeedMult.Value;
+                    decimal exspd = 2.2m / tspeedMult.Value;
+
+                    Directory.CreateDirectory(rbvrPatchDir + "/pc/config/include/");
+
+                    rbvrtSpeedA = rbvrtSpeedA.Replace("2.4", $"{ezspd}");
+                    rbvrtSpeedA = rbvrtSpeedA.Replace("2.0", $"{mdspd}");
+                    rbvrtSpeedA = rbvrtSpeedA.Replace("1.6", $"{hdspd}");
+                    rbvrtSpeedA = rbvrtSpeedA.Replace("1.2", $"{exspd}");
+                }
+
+                using (FileStream fs = File.Create(rbvrtSpeedB))
+                {
+                    var tspeedA = DTX.FromDtaString(rbvrtSpeedA);
+                    DTX.ToDtb(tspeedA, fs);
+                }
+            }
+            log("Starting RBVR!");
       rbvr.Start();
     }
 
@@ -161,6 +205,11 @@ namespace RBVR_Enhanced_Launcher
     }
 
         private void noDeleteCheck_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tspeedMult_ValueChanged(object sender, EventArgs e)
         {
 
         }

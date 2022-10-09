@@ -226,7 +226,7 @@ namespace DtxCS
                     current.AddNode(new DataIfNDef(tmp_constant));
                     break;
                   case "include":
-                    current.AddNode(new DataIfNDef(tmp_constant));
+                    current.AddNode(new DataInclude(tmp_constant));
                     break;
                   case "merge":
                     current.AddNode(new DataMerge(tmp_constant));
