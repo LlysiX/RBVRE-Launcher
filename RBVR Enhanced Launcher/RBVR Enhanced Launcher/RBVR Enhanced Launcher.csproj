@@ -7,7 +7,7 @@
     <ProjectGuid>{B63003AB-762C-45AC-84E8-A565384C0CD0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>RBVR_Enhanced_Launcher</RootNamespace>
-    <AssemblyName>RBVR Enhanced Launcher</AssemblyName>
+    <AssemblyName>RBVREnhanced Launcher</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -69,6 +69,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="blnk.bmp_pc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -78,6 +81,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="track_graphics.dta">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -86,6 +92,10 @@
     <ProjectReference Include="..\..\Dependencies\DtxCS\Library\DtxCS.csproj">
       <Project>{8651b5c6-b8f9-4a30-a4e6-37d6ca367306}</Project>
       <Name>DtxCS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dependencies\LibForge\LibForge\LibForge.csproj">
+      <Project>{3684b7e6-0978-487a-895c-d0ed8f6b7b9a}</Project>
+      <Name>LibForge</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

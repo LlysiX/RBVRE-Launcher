@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.IO;
 using DtxCS;
+using LibForge.Texture;
 
 namespace RBVR_Enhanced_Launcher
 {
@@ -21,18 +22,21 @@ namespace RBVR_Enhanced_Launcher
       InitializeComponent();
     }
 
+    void Log(string x) => logBox.AppendText(x + Environment.NewLine);
+
     void ClearState()
     {
       listBox1.Items.Clear();
+      folderName.Text = "None";
+      highwayName.Text = "None";
+      tspeedMult.Value = 0;
       UpdateState();
     }
     void UpdateState()
     {
       if (listBox1.Items.Count == 0)
       {
-        groupBox2.Enabled = false;
         groupBox3.Enabled = false;
-        tspeedMult.Value = 0;
         return;
       }
       else
@@ -62,7 +66,6 @@ namespace RBVR_Enhanced_Launcher
 
     private void pickFileButton_Click(object sender, EventArgs e)
     {
-            Action<string> log = x => logBox.AppendText(x + Environment.NewLine);
             using (var ofd = new FolderBrowserDialog())
       {
         if(ofd.ShowDialog() == DialogResult.OK && Directory.Exists(ofd.SelectedPath + "/rawfiles"))
@@ -71,7 +74,7 @@ namespace RBVR_Enhanced_Launcher
         }
         else
         {
-          log($"ERROR: {ofd.SelectedPath}\\rawfiles does not exist!");
+          Log($"ERROR: {ofd.SelectedPath}\\rawfiles does not exist!");
         }
         UpdateState();
       }
@@ -82,23 +85,12 @@ namespace RBVR_Enhanced_Launcher
       listBox1.Items.Remove(filename);
     }
 
-    private void idBox_TextChanged(object sender, EventArgs e)
-    {
-      
-    }
-
-    private void euCheckBox_CheckedChanged(object sender, EventArgs e)
-    {
-      
-    }
-
     private void buildButton_Click(object sender, EventArgs e)
     {
-      Action<string> log = x => logBox.AppendText(x + Environment.NewLine);
       var rbvrExec = folderName.Text + "/rbvr.exe";
       var rbvrPatchDir = folderName.Text + "/rawfiles";
             string rbvrtSpeedA = File.ReadAllText("track_graphics.dta");
-            var rbvrtSpeedB = folderName.Text + "/rawfiles/pc/config/include/track_graphics.dta_dta_pc";
+            var rbvrtSpeedB = rbvrPatchDir + "/pc/config/include/track_graphics.dta_dta_pc";
       Process rbvr = new Process();
       rbvr.StartInfo.WorkingDirectory = folderName.Text;
       rbvr.StartInfo.FileName = rbvrExec;
@@ -106,29 +98,28 @@ namespace RBVR_Enhanced_Launcher
       if ((! noDeleteCheck.Checked) && Directory.Exists(rbvrPatchDir))
       {
         Directory.Delete(rbvrPatchDir, true);
-        log("Clearing Old Patches...");
+        Log("Clearing Old Patches...");
       }
       for (int i = 0; i < listBox1.Items.Count; i++)
       {
         var patchDir = (string)listBox1.Items[i];
         DirectoryInfo patch = new DirectoryInfo(patchDir);
         CopyPatches(patch, rbvrDir);
-        log($"Copying Patch {listBox1.Items[i]} to {folderName.Text}...");
+        Log($"Copying Patch {listBox1.Items[i]} to {folderName.Text}...");
       }
       if (tspeedMult.Value > 0)
       {
-                if (File.Exists($"{rbvrPatchDir}/pc/config/include/track_graphics.dta_dta_pc"))
-                    File.Delete($"{rbvrPatchDir}/pc/config/include/track_graphics.dta_dta_pc");
+                if (File.Exists($"{rbvrtSpeedB}"))
+                    File.Delete($"{rbvrtSpeedB}");
+                Directory.CreateDirectory(rbvrPatchDir + "/pc/config/include/");
 
-                if (volumeAdjustCheckBox.Checked)
+                if (trackSpeedCheck.Checked)
                 {
-                    log($"adding track multiplier of {tspeedMult.Value} using RB1-RB4 Multiplier");
+                    Log($"adding track multiplier of {tspeedMult.Value} using RB1-RB4 Multiplier...");
                     decimal ezspd = 2.4m / tspeedMult.Value;
                     decimal mdspd = 2.0m / tspeedMult.Value;
                     decimal hdspd = 1.6m / tspeedMult.Value;
                     decimal exspd = 1.2m / tspeedMult.Value;
-
-                    Directory.CreateDirectory(rbvrPatchDir + "/pc/config/include/");
 
                     rbvrtSpeedA = rbvrtSpeedA.Replace("2.4", $"{ezspd}");
                     rbvrtSpeedA = rbvrtSpeedA.Replace("2.0", $"{mdspd}");
@@ -137,13 +128,11 @@ namespace RBVR_Enhanced_Launcher
                 }
                 else
                 {
-                    log($"adding track multiplier of {tspeedMult.Value} using RBVR Multiplier");
+                    Log($"adding track multiplier of {tspeedMult.Value} using RBVR Multiplier...");
                     decimal ezspd = 3.4m / tspeedMult.Value;
                     decimal mdspd = 3.0m / tspeedMult.Value;
                     decimal hdspd = 2.6m / tspeedMult.Value;
                     decimal exspd = 2.2m / tspeedMult.Value;
-
-                    Directory.CreateDirectory(rbvrPatchDir + "/pc/config/include/");
 
                     rbvrtSpeedA = rbvrtSpeedA.Replace("2.4", $"{ezspd}");
                     rbvrtSpeedA = rbvrtSpeedA.Replace("2.0", $"{mdspd}");
@@ -156,8 +145,24 @@ namespace RBVR_Enhanced_Launcher
                     var tspeedA = DTX.FromDtaString(rbvrtSpeedA);
                     DTX.ToDtb(tspeedA, fs);
                 }
+      }
+      if (! (highwayName.Text == "None"))
+      {
+                Log($"Adding custom highway {highwayName.Text}...");
+                var texLoc = rbvrPatchDir + "/pc/track/shared/gem_track_texture/gem_track_surface.bmp_pc";
+                if (File.Exists($"{texLoc}"))
+                    File.Delete($"{texLoc}");
+                Directory.CreateDirectory(rbvrPatchDir + "/pc/track/shared/gem_track_texture/");
+                using (FileStream fo = File.Create(texLoc))
+                    {
+                    var img = System.Drawing.Image.FromFile(highwayName.Text);
+                    var tex = TextureConverter.ToTexture(img);
+                    TextureWriter.WriteStream(tex, fo);
+                }
+                File.Copy("blnk.bmp_pc", $"{rbvrPatchDir}/pc/track/shared/track_pattern_center_util.bmp_pc");
+                File.Copy("blnk.bmp_pc", $"{rbvrPatchDir}/pc/track/shared/track_pattern_side_util.bmp_pc");
             }
-            log("Starting RBVR!");
+      Log("Starting RBVR!");
       rbvr.Start();
     }
 
@@ -169,12 +174,11 @@ namespace RBVR_Enhanced_Launcher
     private void listBox1_DragDrop(object sender, DragEventArgs e)
     {
       string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            Action<string> log = x => logBox.AppendText(x + Environment.NewLine);
             foreach (string file in files)
                 if (Directory.Exists(file + "/rawfiles"))
                     listBox1.Items.Add(file);
                 else
-                    log($"ERROR: {file}\\rawfiles does not exist!");
+                    Log($"ERROR: {file}\\rawfiles does not exist!");
             UpdateState();
     }
 
@@ -196,10 +200,14 @@ namespace RBVR_Enhanced_Launcher
     {
       using (var sfd = new FolderBrowserDialog())
       {
-        if (sfd.ShowDialog() == DialogResult.OK)
+        if (sfd.ShowDialog() == DialogResult.OK && File.Exists(sfd.SelectedPath + "/rbvr.exe"))
         {
-          folderName.Text = sfd.SelectedPath;
-          groupBox3.Enabled = true;
+            folderName.Text = sfd.SelectedPath;
+            groupBox3.Enabled = true;
+        }
+        else
+        {
+            Log($"ERROR: {sfd.SelectedPath}\\rbvr.exe does not exist!");
         }
       }
     }
@@ -212,6 +220,16 @@ namespace RBVR_Enhanced_Launcher
         private void tspeedMult_ValueChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void pickHighwaybtn_Click(object sender, EventArgs e)
+        {
+            using (var tex = new OpenFileDialog())
+            {
+                tex.Filter = "image files (*.png, *.jpg, *.jpeg, *.bmp, *.tiff, *.gif)|*.png;*.jpg;*.jpeg;*.bmp;*.tiff;*.gif|All files (*.*)|*.*";
+                if (tex.ShowDialog() == DialogResult.OK)
+                    highwayName.Text = tex.FileName;
+            }
         }
     }
 }
